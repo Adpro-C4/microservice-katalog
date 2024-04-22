@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 @Repository
 public class ProductRepository {
     private List<Product> productData = new ArrayList<>();
-    private static int productCount = 0;
+    private static int productCount = 1; // start id from 1
 
     public Product create(Product product) {
         product.setId(Integer.toString(productCount)); // make product id

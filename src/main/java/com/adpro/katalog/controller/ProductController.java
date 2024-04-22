@@ -3,10 +3,11 @@ package com.adpro.katalog.controller;
 import com.adpro.katalog.model.Product;
 import com.adpro.katalog.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Controller
@@ -15,6 +16,19 @@ public class ProductController {
 
     @Autowired
     private ProductService service;
+
+    @GetMapping("/all")
+    public @ResponseBody List<Product> getAllProductsAsJson() {
+        List<Product> allProducts = service.findAll();
+        return allProducts;
+    }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<Product> getProductById(@PathVariable("id") String productId) {
+        Product product = service.findById(productId);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
 
     @GetMapping("/create")
     public String createProductPage(Model model) {
