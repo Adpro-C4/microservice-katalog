@@ -8,6 +8,7 @@ class KatalogApplicationTests {
 
 	@Test
 	void contextLoads() {
+		KatalogApplication.main(new String[] {});
 	}
 
 }

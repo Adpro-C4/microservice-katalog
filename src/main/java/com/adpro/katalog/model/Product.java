@@ -3,7 +3,13 @@ import lombok.Getter;
 import lombok.Setter;
 @Getter @Setter
 public class Product {
-    private String productId;
-    private String productName;
-    private int productQuantity;
+    private String id;
+    private String name;
+    private String description;
+    private int price;
+    private int discount;
+    private String brand;
+    private String category;
+    private String image;
+    private int quantity;
 }

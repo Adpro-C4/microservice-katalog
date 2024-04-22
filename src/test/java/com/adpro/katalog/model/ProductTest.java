@@ -1,4 +1,4 @@
-package com.adpro.katalog.model.model;
+package com.adpro.katalog.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
