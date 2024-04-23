@@ -11,7 +11,7 @@ class ProductTest {
     @BeforeEach
     void setUp() {
         this.product = new Product();
-        this.product.setId("1");
+        this.product.setId(1L);
         this.product.setName("Sampo Kuda Nil");
         this.product.setDescription("Sampo yang sangat mantap");
         this.product.setPrice(12000);
@@ -24,7 +24,7 @@ class ProductTest {
 
     @Test
     void testGetProductId() {
-        assertEquals("1", this.product.getId());
+        assertEquals(1L, this.product.getId());
     }
 
     @Test
