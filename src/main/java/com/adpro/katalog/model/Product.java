@@ -1,10 +1,18 @@
 package com.adpro.katalog.model;
 
+import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.Setter;
-@Getter @Setter
+
+@Entity
+@Getter
+@Setter
 public class Product {
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String name = "";
     private String description = "";
     private int price = 0;

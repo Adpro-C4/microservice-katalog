@@ -18,27 +18,18 @@ public class ProductServiceImpl implements  ProductService {
 
     @Override
     public Product create(Product product) {
-        productRepository.create(product);
-        return product;
+        // Use save method from JpaRepository to create or update the product
+        return productRepository.save(product);
     }
 
     @Override
     public List<Product> findAll() {
-        Iterator<Product> productIterator = productRepository.findAll();
-        List<Product> allProduct = new ArrayList<>();
-        productIterator.forEachRemaining(allProduct::add);
-        return allProduct;
+        // Use findAll method from JpaRepository to fetch all products
+        return productRepository.findAll();
     }
 
-    @Override
-    public Product findById(String productId) throws NoSuchElementException {
-        Iterator<Product> iterator = productRepository.findAll();
-        while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (product.getId().equals(productId)) {
-                return product;
-            }
-        }
-        throw new NoSuchElementException("No such product with id: " + productId);
+    public Product findById(Long productId) throws NoSuchElementException {
+        // Use getById method from JpaRepository to find a product by ID
+        return productRepository.getById(productId);
     }
 }
