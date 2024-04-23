@@ -1,4 +1,4 @@
-package com.adpro.backend.modules.commonmodule.util;
+package com.adpro.commonmodule.util;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

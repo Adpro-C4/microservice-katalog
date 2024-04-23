@@ -1,4 +1,4 @@
-package com.adpro.backend.modules.commonmodule.config;
+package com.adpro.commonmodule.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
