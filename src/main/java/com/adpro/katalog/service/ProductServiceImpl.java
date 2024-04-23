@@ -29,7 +29,7 @@ public class ProductServiceImpl implements  ProductService {
     }
 
     public Product findById(Long productId) throws NoSuchElementException {
-        // Use getById method from JpaRepository to find a product by ID
-        return productRepository.getById(productId);
+        // Use getReferenceById method from JpaRepository to find a product by ID
+        return productRepository.getReferenceById(productId);
     }
 }
