@@ -1,4 +1,5 @@
 package com.adpro.katalog.model;
+
 import lombok.Getter;
 import lombok.Setter;
 @Getter @Setter
