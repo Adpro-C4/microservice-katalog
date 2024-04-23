@@ -25,9 +25,14 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<Product> getProductById(@PathVariable("id") Long productId) {
-        Product product = service.findById(productId);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    public ResponseEntity<Object> getProductById(@PathVariable("id") Long productId) {
+        try {
+            Product product = service.findById(productId);
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            String errorMessage = "No such product with id: " + productId;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+        }
     }
 
     @GetMapping("/create")

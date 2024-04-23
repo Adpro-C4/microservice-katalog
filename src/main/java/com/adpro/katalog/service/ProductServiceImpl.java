@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements  ProductService {
@@ -28,8 +29,15 @@ public class ProductServiceImpl implements  ProductService {
         return productRepository.findAll();
     }
 
+    @Override
     public Product findById(Long productId) throws NoSuchElementException {
         // Use getReferenceById method from JpaRepository to find a product by ID
-        return productRepository.getReferenceById(productId);
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            return product;
+        } else {
+            throw new NoSuchElementException("No such product with id: " + productId);
+        }
     }
 }
