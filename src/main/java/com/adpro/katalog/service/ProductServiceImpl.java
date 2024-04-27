@@ -5,8 +5,6 @@ import com.adpro.katalog.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -39,5 +37,31 @@ public class ProductServiceImpl implements  ProductService {
         } else {
             throw new NoSuchElementException("No such product with id: " + productId);
         }
+    }
+
+    @Override
+    public Product edit(Product updatedProduct) throws NoSuchElementException {
+        Long productId = updatedProduct.getId();
+        Product product = findById(productId);
+        product.setName(updatedProduct.getName());
+        product.setDescription(updatedProduct.getDescription());
+        product.setPrice(updatedProduct.getPrice());
+        product.setDiscount(updatedProduct.getDiscount());
+        product.setBrand(updatedProduct.getBrand());
+        product.setCategory(updatedProduct.getCategory());
+        product.setImage(updatedProduct.getImage());
+        product.setQuantity(updatedProduct.getQuantity());;
+
+        return productRepository.save(product);
+    }
+
+    @Override
+    public void delete(Product product) throws NoSuchElementException {
+        productRepository.delete(product);
+    }
+
+    @Override
+    public void deleteAll() {
+        productRepository.deleteAll();
     }
 }
