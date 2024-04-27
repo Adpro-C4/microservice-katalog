@@ -27,11 +27,18 @@ public class ProductRepositoryTest {
     public ProductRepositoryTest(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
+    
+    @Test
+    void testDeleteAll() {
+        productRepository.deleteAll();
+        List<Product> productList = productRepository.findAll();
+        assertTrue(productList.isEmpty());
+    }
 
     @Test
     void testCreateAndFind() {
         Product product = new Product();
-        product.setId(1L);
+        product.setId(Long.MAX_VALUE);
         product.setName("Sampo Cap Bambang");
         product.setQuantity(100);
 
@@ -53,16 +60,16 @@ public class ProductRepositoryTest {
     @Test
     void testFindAllIfMoreThanOneProduct() {
         Product product1 = new Product();
-        product1.setId(1L);
-        product1.setName("Sampo Cap Bambang");
-        product1.setQuantity(100);
+        product1.setId(Long.MAX_VALUE);
+        product1.setName("Sampo Cap Usep");
+        product1.setQuantity(50);
         productRepository.save
         (product1);
 
         Product product2 = new Product();
-        product2.setId(2L);
-        product2.setName("Sampo Cap Usep");
-        product2.setQuantity(50);
+        product2.setId(Long.MAX_VALUE);
+        product2.setName("Sampo Cap Bambang");
+        product2.setQuantity(100);
         productRepository.save
         (product2);
 
@@ -76,12 +83,12 @@ public class ProductRepositoryTest {
     @Test
     void testFindById() {
         Product product1 = new Product();
-        product1.setId(1L);
+        product1.setId(Long.MAX_VALUE);
         product1.setName("Sampo Cap Bambang");
         product1.setQuantity(100);
         productRepository.save(product1);
 
-        Optional<Product> searchedProduct = productRepository.findById(1L);
+        Optional<Product> searchedProduct = productRepository.findById(Long.MAX_VALUE);
         Product foundProduct = searchedProduct.get();
         assertEquals(product1.getId(), foundProduct.getId());
 

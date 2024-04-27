@@ -73,4 +73,10 @@ public class ProductController {
         service.delete(productToDelete);
         return "redirect:../list";
     }
+
+    @GetMapping("/deleteAll")
+    public String deleteAllProducts(Model model) {
+        service.deleteAll();
+        return "redirect:list";
+    }
 }
