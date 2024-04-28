@@ -39,7 +39,7 @@ public class ProductController {
     public String createProductPage(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
-        return "CreateProduct";
+        return "createProduct";
     }
 
     @PostMapping("/create")
@@ -52,14 +52,14 @@ public class ProductController {
     public String productListPage(Model model) {
         List<Product> allProducts = service.findAll();
         model.addAttribute("products", allProducts);
-        return "ProductList";
+        return "productList";
     }
 
     @GetMapping("/edit/{id}")
     public String editProductPage(@PathVariable("id") Long productId, Model model) {
         Product productToEdit = service.findById(productId);
         model.addAttribute("product", productToEdit);
-        return "EditProduct";
+        return "editProduct";
     }
 
     @PostMapping("/edit")
@@ -74,7 +74,7 @@ public class ProductController {
         return "redirect:../list";
     }
 
-    @GetMapping("/deleteAll")
+    @GetMapping("/deleteAll") /// PAS DELETE ALL GA RESET ID NYA
     public String deleteAllProducts(Model model) {
         service.deleteAll();
         return "redirect:list";
