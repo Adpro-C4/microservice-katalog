@@ -66,6 +66,12 @@ public class ProductServiceImpl implements ProductService {
         product.setQuantity(updatedProduct.getQuantity());
 
         Product savedProduct = productRepository.save(product);
+
+        // Check if the product quantity is zero and send WebSocket message
+        if (savedProduct.getQuantity() == 0) {
+            productWebSocketHandler.sendMessageToAll("Produk dengan id " + productId + " kosong");
+        }
+
         return savedProduct;
     }
 
