@@ -1,6 +1,8 @@
 package com.adpro.katalog.service;
 
 import com.adpro.katalog.model.Product;
+import com.adpro.katalog.model.dto.ProductDTO;
+
 import java.util.List;
 
 public interface ProductService {
@@ -10,4 +12,5 @@ public interface ProductService {
     public Product edit(Product product);
     public void delete(Product product);
     public void deleteAll();
+    public void updateProductsStock(List<ProductDTO> productDTOs);
 }
