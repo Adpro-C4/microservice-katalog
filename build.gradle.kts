@@ -82,7 +82,6 @@ sonar {
 		property("sonar.projectKey", "sonar.projectKey=adpro-c4_microservice-katalog")
 		property("sonar.organization", "adpro-c4")
 		property("sonar.host.url", "https://sonarcloud.io")
-		property("sonar.branch.name", "dev")
 	}
 }
 
