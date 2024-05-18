@@ -34,10 +34,11 @@ class productServiceImplTest {
 
     @Test
     void testCreateProductWithZeroQuantity() {
-        Product product = new Product();
-        product.setId(1L);
-        product.setName("Test Product");
-        product.setQuantity(0);
+        Product product = new Product.Builder()
+                .id(1L)
+                .name("Test Product")
+                .quantity(0)
+                .build();
 
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
@@ -52,13 +53,16 @@ class productServiceImplTest {
 
     @Test
     void testEditProductToZeroQuantity() {
-        Product product = new Product();
-        product.setId(1L);
-        product.setQuantity(10);
+        Product product = new Product.Builder()
+                .id(1L)
+                .name("Test Product")
+                .quantity(10)
+                .build();
 
-        Product updatedProduct = new Product();
-        updatedProduct.setId(1L);
-        updatedProduct.setQuantity(0);
+        Product updatedProduct = new Product.Builder()
+                .id(1L)
+                .quantity(0)
+                .build();
 
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenReturn(updatedProduct);
