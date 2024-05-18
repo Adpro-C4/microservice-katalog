@@ -1,17 +1,19 @@
 package com.adpro.katalog.controller;
 
+import com.adpro.commonmodule.util.ResponseHandler;
 import com.adpro.katalog.model.Product;
 import com.adpro.katalog.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.HashMap;
 
-@Controller
+@RestController
 @RequestMapping("/product")
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     @Autowired
@@ -43,7 +45,7 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public String createProductPost(@ModelAttribute Product product, Model model) {
+    public String createProductPost(@RequestBody Product product) {
         service.create(product);
         return "redirect:list";
     }
@@ -63,9 +65,15 @@ public class ProductController {
     }
 
     @PostMapping("/edit")
-    public String editProductPost(@ModelAttribute Product product, Model model) {
+    public ResponseEntity<Object> editProductPost(@RequestBody Product product) {
         service.edit(product);
-        return "redirect:list";
+        return ResponseHandler.generateResponse("ACC", HttpStatus.ACCEPTED, new HashMap<>());
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<Object> deleteProductPost(@RequestBody Product product) {
+        service.delete(product);
+        return ResponseHandler.generateResponse("ACC", HttpStatus.ACCEPTED, new HashMap<>());
     }
 
     @GetMapping("/delete/{id}")
@@ -73,6 +81,7 @@ public class ProductController {
         service.delete(productToDelete);
         return "redirect:../list";
     }
+
 
     @GetMapping("/deleteAll") /// PAS DELETE ALL GA RESET ID NYA
     public String deleteAllProducts(Model model) {
