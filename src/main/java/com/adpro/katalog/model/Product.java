@@ -22,7 +22,10 @@ public class Product {
     private String image = "";
     private int quantity = 0;
 
-    // Private constructor for Builder use
+    // Default constructor for JPA
+    public Product() {}
+
+    // use Builder build pattern
     private Product(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
