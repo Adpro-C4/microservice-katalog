@@ -1,6 +1,5 @@
 package com.adpro.katalog.service;
 
-import com.adpro.katalog.controller.ProductWebSocketHandler;
 import com.adpro.katalog.model.Product;
 import com.adpro.katalog.model.dto.ProductDTO;
 import com.adpro.katalog.repository.ProductRepository;
@@ -19,18 +18,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private ProductWebSocketHandler productWebSocketHandler;
-
     @Override
     public Product create(Product product) {
         Product savedProduct = productRepository.save(product);
-
-        // Check if the product quantity is zero and send WebSocket message
-        if (savedProduct.getQuantity() == 0) {
-            productWebSocketHandler.sendMessageToAll("Produk dengan id " + savedProduct.getId() + " kosong");
-        }
-
         return savedProduct;
     }
 
@@ -66,12 +56,6 @@ public class ProductServiceImpl implements ProductService {
         product.setQuantity(updatedProduct.getQuantity());
 
         Product savedProduct = productRepository.save(product);
-
-        // Check if the product quantity is zero and send WebSocket message
-        if (savedProduct.getQuantity() == 0) {
-            productWebSocketHandler.sendMessageToAll("Produk dengan id " + productId + " kosong");
-        }
-
         return savedProduct;
     }
 
@@ -100,9 +84,6 @@ public class ProductServiceImpl implements ProductService {
             if (dto != null) {
                 product.setQuantity(product.getQuantity() - dto.getQuantity()); // Menetapkan stok baru dari DTO
                 // Check if the product quantity is zero and send WebSocket message
-                if (product.getQuantity() == 0) {
-                    productWebSocketHandler.sendMessageToAll("Produk dengan id " + product.getId() + " kosong");
-                }
             }
         }
 
