@@ -22,8 +22,8 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                             <span th:if="${product.discount > 0}">
-                                Original Price: <span th:text="${product.price}"></span><br>
-                                Price after Discount: <span th:text="${product.price - (product.price * product.discount / 100)}"></span>
+                                Original Price: <span th:text="'Rp' + ${product.price}"></span><br>
+                                Price after Discount: <span th:text="'Rp' + ${product.price - (product.price * product.discount / 100)}"></span>
                             </span>
                             <span th:unless="${product.discount > 0}" th:text="${product.price}"></span>
                         </li>

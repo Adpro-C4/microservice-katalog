@@ -69,6 +69,6 @@ class productServiceImplTest {
         verify(productWebSocketHandler).sendMessageToAll(messageCaptor.capture());
 
         String expectedMessage = "Produk dengan id 1 kosong";
-         assertEquals(expectedMessage, messageCaptor.getValue());
+        assertEquals(expectedMessage, messageCaptor.getValue());
     }
 }
