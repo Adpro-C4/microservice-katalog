@@ -40,14 +40,14 @@ public class Product {
 
     public static class Builder {
         private Long id;
-        private String name = "";
-        private String description = "";
-        private int price = 0;
-        private int discount = 0;
-        private String brand = "";
-        private String category = "";
-        private String image = "";
-        private int quantity = 0;
+        private String name;
+        private String description;
+        private int price;
+        private int discount;
+        private String brand;
+        private String category;
+        private String image;
+        private int quantity;
 
         public Builder() {}
 
