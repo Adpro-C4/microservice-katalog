@@ -6,7 +6,7 @@ import com.adpro.katalog.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.HashMap;
@@ -18,6 +18,11 @@ public class ProductController {
 
     @Autowired
     private ProductService service;
+
+    private static final String TOPICS = "/topic/product-update";
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/all")
     public @ResponseBody ResponseEntity<List<Product>> getAllProductsAsJson() {
@@ -40,6 +45,7 @@ public class ProductController {
     @PostMapping("/create")
     public ResponseEntity<Product> createProductPost(@RequestBody Product product) {
         service.create(product);
+        messagingTemplate.convertAndSend(TOPICS,"update");
         return ResponseEntity.ok(service.create(product));
     }
 
@@ -47,12 +53,14 @@ public class ProductController {
     @PostMapping("/edit") // edit using websocket
     public ResponseEntity<Object> editProductPost(@RequestBody Product product) {
         service.edit(product);
+        messagingTemplate.convertAndSend(TOPICS,"update");
         return ResponseHandler.generateResponse("ACC", HttpStatus.ACCEPTED, new HashMap<>());
     }
 
     @PostMapping("/delete") // delete using websocket
     public ResponseEntity<Object> deleteProductPost(@RequestBody Product product) {
         service.delete(product);
+        messagingTemplate.convertAndSend(TOPICS,"update");
         return ResponseHandler.generateResponse("ACC", HttpStatus.ACCEPTED, new HashMap<>());
     }
 }
