@@ -20,9 +20,9 @@ public class ProductController {
     private ProductService service;
 
     @GetMapping("/all")
-    public @ResponseBody List<Product> getAllProductsAsJson() {
+    public @ResponseBody ResponseEntity<List<Product>> getAllProductsAsJson() {
         List<Product> allProducts = service.findAll();
-        return allProducts;
+        return ResponseEntity.ok(allProducts);
     }
 
     @GetMapping("/{id}")
@@ -38,47 +38,21 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public String createProductPost(@RequestBody Product product) {
+    public ResponseEntity<Product> createProductPost(@RequestBody Product product) {
         service.create(product);
-        return "redirect:list";
+        return ResponseEntity.ok(service.create(product));
     }
 
-    // @GetMapping("/list")
-    // public String productListPage(Model model) {
-    //     List<Product> allProducts = service.findAll();
-    //     model.addAttribute("products", allProducts);
-    //     return "productList";
-    // }
 
-    @GetMapping("/edit/{id}")
-    public String editProductPage(@PathVariable("id") Long productId, Model model) {
-        Product productToEdit = service.findById(productId);
-        model.addAttribute("product", productToEdit);
-        return "editProduct";
-    }
-
-    @PostMapping("/edit")
+    @PostMapping("/edit") // edit using websocket
     public ResponseEntity<Object> editProductPost(@RequestBody Product product) {
         service.edit(product);
         return ResponseHandler.generateResponse("ACC", HttpStatus.ACCEPTED, new HashMap<>());
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/delete") // delete using websocket
     public ResponseEntity<Object> deleteProductPost(@RequestBody Product product) {
         service.delete(product);
         return ResponseHandler.generateResponse("ACC", HttpStatus.ACCEPTED, new HashMap<>());
-    }
-
-    @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable("id") Product productToDelete, Model model) {
-        service.delete(productToDelete);
-        return "redirect:../list";
-    }
-
-
-    @GetMapping("/deleteAll") /// PAS DELETE ALL GA RESET ID NYA
-    public String deleteAllProducts(Model model) {
-        service.deleteAll();
-        return "redirect:list";
     }
 }
