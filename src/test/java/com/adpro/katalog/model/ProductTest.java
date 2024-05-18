@@ -10,16 +10,17 @@ class ProductTest {
 
     @BeforeEach
     void setUp() {
-        this.product = new Product();
-        this.product.setId(1L);
-        this.product.setName("Sampo Kuda Nil");
-        this.product.setDescription("Sampo yang sangat mantap");
-        this.product.setPrice(12000);
-        this.product.setDiscount(0);
-        this.product.setBrand("Kuda Nil");
-        this.product.setCategory("Sampo");
-        this.product.setImage("https://cdn.dummyjson.com/product-images/1/1.jpg");
-        this.product.setQuantity(100);
+        this.product = new Product.Builder()
+                .id(1L)
+                .name("Sampo Kuda Nil")
+                .description("Sampo yang sangat mantap")
+                .price(12000)
+                .discount(0)
+                .brand("Kuda Nil")
+                .category("Sampo")
+                .image("https://cdn.dummyjson.com/product-images/1/1.jpg")
+                .quantity(100)
+                .build();
     }
 
     @Test
