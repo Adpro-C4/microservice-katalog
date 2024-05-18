@@ -80,8 +80,9 @@ dependencies {
 sonar {
 	properties {
 		property("sonar.projectKey", "sonar.projectKey=Adpro-C4_microservice-katalog")
-		property("sonar.organization", "Adpro-C4")
+		property("sonar.organization", "adpro-c4")
 		property("sonar.host.url", "https://sonarcloud.io")
+		property("sonar.branch.name", "dev")
 	}
 }
 
