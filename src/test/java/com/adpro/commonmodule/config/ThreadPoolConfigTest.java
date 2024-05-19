@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(classes = ThreadPoolConfig.class)
-public class ThreadPoolConfigTest {
+ class ThreadPoolConfigTest {
 
     @Autowired
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Test
-    public void testThreadPoolTaskExecutorBean() {
+     void testThreadPoolTaskExecutorBean() {
         assertNotNull(threadPoolTaskExecutor);
         assertEquals(1800, threadPoolTaskExecutor.getCorePoolSize());
         assertEquals(2000, threadPoolTaskExecutor.getMaxPoolSize());

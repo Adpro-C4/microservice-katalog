@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ProductController.class)
-public class ProductControllerTest {
+ class ProductControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

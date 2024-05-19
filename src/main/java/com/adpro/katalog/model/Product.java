@@ -49,7 +49,9 @@ public class Product {
         private String image;
         private int quantity;
 
-        public Builder() {}
+        public Builder() {
+            // empty constructor for JPA
+        }
 
         public Builder id(Long id) {
             this.id = id;

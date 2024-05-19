@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class WebSocketTextControllerTest {
+ class WebSocketTextControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -24,7 +24,7 @@ public class WebSocketTextControllerTest {
     private ObjectMapper objectMapper; // Used for JSON serialization/deserialization
 
     @Test
-    public void testSendMessage() throws Exception {
+     void testSendMessage() throws Exception {
         TextMessageDTO messageDTO = new TextMessageDTO();
         messageDTO.setMessage("Test message");
 

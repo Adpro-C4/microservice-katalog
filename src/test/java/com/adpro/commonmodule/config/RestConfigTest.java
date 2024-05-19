@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = RestConfig.class) // Specify the configuration class
-public class RestConfigTest {
+ class RestConfigTest {
 
     @MockBean
     private RestTemplate restTemplate;
@@ -19,7 +19,7 @@ public class RestConfigTest {
     private RestConfig restConfig;
 
     @Test
-    public void testRestTemplateBean() {
+     void testRestTemplateBean() {
         assertNotNull(restConfig.restTemplate());
     }
 }

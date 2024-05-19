@@ -10,10 +10,10 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
 
-public class RabbitMQConfigTest {
+ class RabbitMQConfigTest {
 
     @Test
-    public void testQueuesExist() {
+     void testQueuesExist() {
         RabbitMQConfig rabbitMQConfig = new RabbitMQConfig();
 
         Queue purchaseQueue = rabbitMQConfig.purchaseQueue();
@@ -30,7 +30,7 @@ public class RabbitMQConfigTest {
     }
 
     @Test
-    public void testExchangeExists() {
+     void testExchangeExists() {
         RabbitMQConfig rabbitMQConfig = new RabbitMQConfig();
 
         Exchange exchange = rabbitMQConfig.exchange();

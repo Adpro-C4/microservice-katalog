@@ -10,12 +10,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ProductDTOTest {
+ class ProductDTOTest {
 
     private ProductDTO productDTO;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         productDTO = new ProductDTO();
         productDTO.setProductId("123");
         productDTO.setName("Test Product");
@@ -24,7 +24,7 @@ public class ProductDTOTest {
     }
 
     @Test
-    public void testProductDTOGettersAndSetters() {
+     void testProductDTOGettersAndSetters() {
         assertEquals("123", productDTO.getProductId());
         assertEquals("Test Product", productDTO.getName());
         assertEquals(10, productDTO.getQuantity());
@@ -32,7 +32,7 @@ public class ProductDTOTest {
     }
 
     @Test
-    public void testProductDTOConstructor() {
+     void testProductDTOConstructor() {
         ProductDTO newProductDTO = new ProductDTO();
         newProductDTO.setProductId("456");
         newProductDTO.setName("New Product");
@@ -46,7 +46,7 @@ public class ProductDTOTest {
     }
 
     @Test
-    public void testProductDTOJsonSerialization() throws IOException {
+     void testProductDTOJsonSerialization() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String jsonString = objectMapper.writeValueAsString(productDTO);
@@ -59,7 +59,7 @@ public class ProductDTOTest {
     }
 
     @Test
-    public void testProductDTOJsonDeserialization() throws IOException {
+     void testProductDTOJsonDeserialization() throws IOException {
         String jsonString = "{\"productId\":\"789\",\"name\":\"Serialized Product\",\"quantity\":30,\"price\":299.99}";
         ObjectMapper objectMapper = new ObjectMapper();
         ProductDTO deserializedProductDTO = objectMapper.readValue(jsonString, ProductDTO.class);

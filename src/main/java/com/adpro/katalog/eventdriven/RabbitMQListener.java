@@ -50,10 +50,9 @@ public class RabbitMQListener {
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                     break;
-                    // TODO Auto-generated catch block
+                   
                     
                 } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                     break;
                 }
