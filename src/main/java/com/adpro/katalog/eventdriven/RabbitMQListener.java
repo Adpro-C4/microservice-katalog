@@ -1,6 +1,5 @@
 package com.adpro.katalog.eventdriven;
 
-
 import com.adpro.katalog.api.API;
 import com.adpro.katalog.model.dto.ProductDTO;
 import com.adpro.katalog.service.ProductService;
@@ -12,32 +11,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 public class RabbitMQListener {
-    @Autowired
-    ProductService productService;
+    private final ProductService productService;
 
-    @RabbitListener(queues = "stock-product-queue")
-    public void receiveSuccessfullTransaction(String message){
-        RestTemplate rest = new RestTemplate();
-        ResponseEntity<JsonNode> responseEntity = rest.
-                getForEntity(API.GET_ORDER_DETAILS.getUrl()+message, JsonNode.class);
-        JsonNode responseBody = responseEntity.getBody();
-        System.out.println(responseBody);
-        JsonNode orderNode = responseBody.get("data").get("order");
-        JsonNode cartItems = orderNode.get("cartItems");
-        List<ProductDTO> productDTOs = jsonToProductDTOList(cartItems);
-        productService.updateProductsStock(productDTOs);
-        System.out.println("SUKSES UPDATE PRODUK");
-        
+    public RabbitMQListener(ProductService productService) {
+        this.productService = productService;
     }
 
-    public List<ProductDTO> jsonToProductDTOList(JsonNode cartItemsNode){
+    @RabbitListener(queues = "stock-product-queue")
+    public void receiveSuccessfullTransaction(String message) {
+        RestTemplate rest = new RestTemplate();
+        ResponseEntity<JsonNode> responseEntity = rest.
+                getForEntity(API.GET_ORDER_DETAILS.getUrl() + message, JsonNode.class);
+        JsonNode responseBody = responseEntity.getBody();
+
+        if (responseBody != null) { // Check if responseBody is not null
+            System.out.println(responseBody);
+            JsonNode orderNode = responseBody.get("data").get("order");
+            JsonNode cartItems = orderNode.get("cartItems");
+            List<ProductDTO> productDTOs = jsonToProductDTOList(cartItems);
+            productService.updateProductsStock(productDTOs);
+            System.out.println("SUKSES UPDATE PRODUK");
+        } else {
+            System.out.println("Response body is null. Unable to process the message.");
+            // Handle the case where responseBody is null, such as logging an error or throwing an exception.
+        }
+    }
+
+
+    public List<ProductDTO> jsonToProductDTOList(JsonNode cartItemsNode) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<ProductDTO> productDTOList = new ArrayList<>();
         if (cartItemsNode != null && cartItemsNode.isArray()) {
@@ -46,12 +53,7 @@ public class RabbitMQListener {
                 try {
                     productDTO = objectMapper.treeToValue(itemNode, ProductDTO.class);
                     productDTOList.add(productDTO);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                    break;
-                   
-                    
-                } catch (IllegalArgumentException e) {
+                } catch (JsonProcessingException | IllegalArgumentException e) {
                     e.printStackTrace();
                     break;
                 }

@@ -20,18 +20,18 @@ public class ProductController {
     private ProductService service;
 
     private static final String TOPICS = "/topic/product-update";
+    private static final String update = "update";
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/all")
-    public @ResponseBody ResponseEntity<List<Product>> getAllProductsAsJson() {
+    public ResponseEntity<List<Product>> getAllProductsAsJson() {
         List<Product> allProducts = service.findAll();
         return ResponseEntity.ok(allProducts);
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
     public ResponseEntity<Object> getProductById(@PathVariable("id") Long productId) {
         try {
             Product product = service.findById(productId);
@@ -45,7 +45,7 @@ public class ProductController {
     @PostMapping("/create")
     public ResponseEntity<Product> createProductPost(@RequestBody Product product) {
         service.create(product);
-        messagingTemplate.convertAndSend(TOPICS,"update");
+        messagingTemplate.convertAndSend(TOPICS,update);
         return ResponseEntity.ok(service.create(product));
     }
 
@@ -53,14 +53,14 @@ public class ProductController {
     @PostMapping("/edit") // edit using websocket
     public ResponseEntity<Object> editProductPost(@RequestBody Product product) {
         service.edit(product);
-        messagingTemplate.convertAndSend(TOPICS,"update");
+        messagingTemplate.convertAndSend(TOPICS,update);
         return ResponseHandler.generateResponse("ACC", HttpStatus.ACCEPTED, new HashMap<>());
     }
 
     @PostMapping("/delete") // delete using websocket
     public ResponseEntity<Object> deleteProductPost(@RequestBody Product product) {
         service.delete(product);
-        messagingTemplate.convertAndSend(TOPICS,"update");
+        messagingTemplate.convertAndSend(TOPICS,update);
         return ResponseHandler.generateResponse("ACC", HttpStatus.ACCEPTED, new HashMap<>());
     }
 }

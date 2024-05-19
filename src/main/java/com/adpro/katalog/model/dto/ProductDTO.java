@@ -16,7 +16,9 @@ public class ProductDTO implements Serializable{
     private String name;
     private int quantity;
     private double price;
-    public ProductDTO(){
+    public ProductDTO(
+        // empty constructor for JPA
+    ){
 
     }
     // constructor, getters, and setters
