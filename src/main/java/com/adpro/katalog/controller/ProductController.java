@@ -20,7 +20,7 @@ public class ProductController {
     private ProductService service;
 
     private static final String TOPICS = "/topic/product-update";
-    private static final String update = "update";
+    private static final String UPDATE = "update";
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
@@ -45,7 +45,7 @@ public class ProductController {
     @PostMapping("/create")
     public ResponseEntity<Product> createProductPost(@RequestBody Product product) {
         service.create(product);
-        messagingTemplate.convertAndSend(TOPICS,update);
+        messagingTemplate.convertAndSend(TOPICS,UPDATE);
         return ResponseEntity.ok(service.create(product));
     }
 
@@ -53,14 +53,14 @@ public class ProductController {
     @PostMapping("/edit") // edit using websocket
     public ResponseEntity<Object> editProductPost(@RequestBody Product product) {
         service.edit(product);
-        messagingTemplate.convertAndSend(TOPICS,update);
+        messagingTemplate.convertAndSend(TOPICS,UPDATE);
         return ResponseHandler.generateResponse("ACC", HttpStatus.ACCEPTED, new HashMap<>());
     }
 
     @PostMapping("/delete") // delete using websocket
     public ResponseEntity<Object> deleteProductPost(@RequestBody Product product) {
         service.delete(product);
-        messagingTemplate.convertAndSend(TOPICS,update);
+        messagingTemplate.convertAndSend(TOPICS,UPDATE);
         return ResponseHandler.generateResponse("ACC", HttpStatus.ACCEPTED, new HashMap<>());
     }
 }
