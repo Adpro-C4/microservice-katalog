@@ -4,102 +4,108 @@ import com.adpro.katalog.model.Product;
 import com.adpro.katalog.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Collections;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(MockitoExtension.class)
-class ProductControllerTest {
+@WebMvcTest(ProductController.class)
+public class ProductControllerTest {
 
-    @Mock
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
     private ProductService productService;
 
-    @InjectMocks
-    private ProductController productController;
+    @MockBean
+    private SimpMessagingTemplate messagingTemplate;
+
+    private Product product;
 
     @BeforeEach
     void setUp() {
+        product = new Product(); // Initialize product
+        product.setId(1L);
+        product.setName("Test Product");
     }
 
     @Test
-    void testGetAllProductsAsJson() {
-        List<Product> products = new ArrayList<>();
-        products.add(new Product());
-        when(productService.findAll()).thenReturn(products);
+    void getAllProductsAsJson() throws Exception {
+        when(productService.findAll()).thenReturn(Collections.singletonList(product));
 
-        ResponseEntity<List<Product>> response = productController.getAllProductsAsJson();
-
-        assertEquals(1, response.getBody().size());
+        mockMvc.perform(MockMvcRequestBuilders.get("/product/all"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Test Product"));
     }
 
     @Test
-    void testGetProductById() {
-        Product product = new Product();
+    void getProductById() throws Exception {
         when(productService.findById(1L)).thenReturn(product);
 
-        ResponseEntity<Object> response = productController.getProductById(1L);
-
-        assertEquals(product, response.getBody());
-        verify(productService, times(1)).findById(1L);
+        mockMvc.perform(MockMvcRequestBuilders.get("/product/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Test Product"));
     }
 
     @Test
-    void testGetProductByIdNotFound() {
-        Product product = new Product();
-        when(productService.findById(5L)).thenReturn(product);
+    void getProductById_NotFound() throws Exception {
+        when(productService.findById(1L)).thenThrow(new RuntimeException("No such product with id: 1"));
 
-        ResponseEntity<Object> response = productController.getProductById(1L);
-
-        assertEquals("No such product with id: 1", response.getBody());
-        verify(productService, times(1)).findById(1L);
+        mockMvc.perform(MockMvcRequestBuilders.get("/product/1"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No such product with id: 1"));
     }
 
     @Test
-    void testCreateProductPost() {
-        Product product = new Product();
+    void createProductPost() throws Exception {
         when(productService.create(any(Product.class))).thenReturn(product);
 
-        ResponseEntity<Product> response = productController.createProductPost(product);
+        mockMvc.perform(MockMvcRequestBuilders.post("/product/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": 1, \"name\": \"Test Product\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Test Product"));
 
-        assertEquals(product, response.getBody());
+        verify(messagingTemplate, times(1)).convertAndSend("/topic/product-update", "update");
     }
 
     @Test
-    void testEditProductPost() {
-        Product product = new Product();
-        ResponseEntity<Object> response = productController.editProductPost(product);
+    void editProductPost() throws Exception {
+        when(productService.edit(any(Product.class))).thenReturn(product);;
 
-        HashMap<String, Object> expectedResponse = new HashMap<>();
-        expectedResponse.put("message", "ACC");
-        expectedResponse.put("status", 202);
-        expectedResponse.put("data", new HashMap<>());
+        mockMvc.perform(MockMvcRequestBuilders.post("/product/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": 1, \"name\": \"Updated Product\"}"))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.message").value("ACC"));
 
-        assertEquals(expectedResponse, response.getBody());
-        verify(productService, times(1)).edit(product);
+        verify(messagingTemplate, times(1)).convertAndSend("/topic/product-update", "update");
     }
 
     @Test
-    void testDeleteProductPost() {
-        Product product = new Product();
-        ResponseEntity<Object> response = productController.deleteProductPost(product);
+    void deleteProductPost() throws Exception {
+        doNothing().when(productService).delete(any(Product.class));
 
-        HashMap<String, Object> expectedResponse = new HashMap<>();
-        expectedResponse.put("message", "ACC");
-        expectedResponse.put("status", 202);
-        expectedResponse.put("data", new HashMap<>());
+        mockMvc.perform(MockMvcRequestBuilders.post("/product/delete")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": 1, \"name\": \"Test Product\"}"))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.message").value("ACC"));
 
-        assertEquals(expectedResponse, response.getBody());
-        verify(productService, times(1)).delete(product);
+        verify(messagingTemplate, times(1)).convertAndSend("/topic/product-update", "update");
     }
 }
