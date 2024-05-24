@@ -74,8 +74,9 @@ class ProductServiceImplTest {
     @Test
     void testFindByIdNotFound() {
     when(productRepository.findById(product.getId())).thenReturn(Optional.empty());
+    Long id = product.getId();
     assertThrows(NoSuchElementException.class, () -> {
-        productService.findById(product.getId());
+        productService.findById(id);
     });
     verify(productRepository, times(1)).findById(product.getId());
     }
