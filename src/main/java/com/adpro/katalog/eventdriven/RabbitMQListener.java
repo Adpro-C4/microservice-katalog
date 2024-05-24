@@ -31,7 +31,6 @@ public class RabbitMQListener {
         JsonNode responseBody = responseEntity.getBody();
 
         if (responseBody != null) { // Check if responseBody is not null
-            System.out.println(responseBody);
             JsonNode orderNode = responseBody.get("data").get("order");
             JsonNode cartItems = orderNode.get("cartItems");
             List<ProductDTO> productDTOs = jsonToProductDTOList(cartItems);

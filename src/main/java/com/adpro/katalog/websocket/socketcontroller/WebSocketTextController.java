@@ -16,8 +16,12 @@ import com.adpro.katalog.websocket.dto.TextMessageDTO;
 @RestController
 public class WebSocketTextController {
 	
-	@Autowired
-    SimpMessagingTemplate template;
+	private final SimpMessagingTemplate template;
+
+    @Autowired
+    public WebSocketTextController(SimpMessagingTemplate template) {
+        this.template = template;
+    }
 	
 	@PostMapping("/send")
 	public ResponseEntity<Void> sendMessage(@RequestBody TextMessageDTO textMessageDTO) {
@@ -28,7 +32,7 @@ public class WebSocketTextController {
 	@MessageMapping("/sendMessage")
 	public void receiveMessage(@Payload TextMessageDTO textMessageDTO) {
 		// receive message from client
-        System.out.println(textMessageDTO.getMessage());
+       textMessageDTO.getMessage();
 	}
 	
 	

@@ -16,14 +16,17 @@ import java.util.HashMap;
 @CrossOrigin(origins = "*")
 public class ProductController {
 
-    @Autowired
-    private ProductService service;
+    private final ProductService service;
+    private final SimpMessagingTemplate messagingTemplate;
 
     private static final String TOPICS = "/topic/product-update";
     private static final String UPDATE = "update";
 
     @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    public ProductController(ProductService service, SimpMessagingTemplate messagingTemplate) {
+        this.service = service;
+        this.messagingTemplate = messagingTemplate;
+    }
 
     @GetMapping("/all")
     public ResponseEntity<List<Product>> getAllProductsAsJson() {

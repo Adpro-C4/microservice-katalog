@@ -14,6 +14,8 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -71,10 +73,13 @@ class ProductServiceImplTest {
 
     @Test
     void testFindByIdNotFound() {
-        when(productRepository.findById(product.getId())).thenReturn(Optional.empty());
-        assertThrows(NoSuchElementException.class, () -> productService.findById(product.getId()));
-        verify(productRepository, times(1)).findById(product.getId());
+    when(productRepository.findById(product.getId())).thenReturn(Optional.empty());
+    assertThrows(NoSuchElementException.class, () -> {
+        productService.findById(product.getId());
+    });
+    verify(productRepository, times(1)).findById(product.getId());
     }
+
 
     @Test
     void testEdit() {
