@@ -36,9 +36,7 @@ public class RabbitMQListener {
             JsonNode cartItems = orderNode.get("cartItems");
             List<ProductDTO> productDTOs = jsonToProductDTOList(cartItems);
             productService.updateProductsStock(productDTOs);
-            System.out.println("SUKSES UPDATE PRODUK");
         } else {
-            System.out.println("Response body is null. Unable to process the message.");
             // Handle the case where responseBody is null, such as logging an error or throwing an exception.
         }
     }

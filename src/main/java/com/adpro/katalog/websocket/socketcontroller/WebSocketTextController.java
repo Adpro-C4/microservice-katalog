@@ -17,7 +17,7 @@ import com.adpro.katalog.websocket.dto.TextMessageDTO;
 public class WebSocketTextController {
 	
 	@Autowired
-    	SimpMessagingTemplate template;
+    SimpMessagingTemplate template;
 	
 	@PostMapping("/send")
 	public ResponseEntity<Void> sendMessage(@RequestBody TextMessageDTO textMessageDTO) {

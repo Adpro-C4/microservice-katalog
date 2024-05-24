@@ -7,6 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResponseHandler {
+
+    private ResponseHandler() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+    
     public static ResponseEntity<Object> generateResponse(String message, HttpStatus status, Object responseObj) {
         Map<String, Object> map = new HashMap<>();
         map.put("message", message);
