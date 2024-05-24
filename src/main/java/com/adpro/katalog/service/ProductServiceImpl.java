@@ -15,13 +15,16 @@ import java.util.stream.Collectors;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    private final ProductRepository productRepository;
+
     @Autowired
-    private ProductRepository productRepository;
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
     public Product create(Product product) {
-        Product savedProduct = productRepository.save(product);
-        return savedProduct;
+        return productRepository.save(product);
     }
 
     @Override
@@ -35,8 +38,7 @@ public class ProductServiceImpl implements ProductService {
         // Use getReferenceById method from JpaRepository to find a product by ID
         Optional<Product> productOptional = productRepository.findById(productId);
         if (productOptional.isPresent()) {
-            Product product = productOptional.get();
-            return product;
+            return productOptional.get();
         } else {
             throw new NoSuchElementException("No such product with id: " + productId);
         }
@@ -55,8 +57,7 @@ public class ProductServiceImpl implements ProductService {
         product.setImage(updatedProduct.getImage());
         product.setQuantity(updatedProduct.getQuantity());
 
-        Product savedProduct = productRepository.save(product);
-        return savedProduct;
+        return productRepository.save(product);
     }
 
     @Override
