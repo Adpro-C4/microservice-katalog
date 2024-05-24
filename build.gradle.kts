@@ -38,13 +38,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-amqp")
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
-	// implementation ("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-mail")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("com.github.javafaker:javafaker:1.0.2")
 	implementation("org.springframework.boot:spring-boot-starter-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-mustache")
-	//implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-web-services")
@@ -54,6 +52,8 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-api:0.11.2")
     implementation("io.jsonwebtoken:jjwt-impl:0.11.2")
     implementation("io.jsonwebtoken:jjwt-jackson:0.11.2")
+	implementation("io.micrometer:micrometer-registry-prometheus")
+
 
 	compileOnly("org.projectlombok:lombok")
 	
