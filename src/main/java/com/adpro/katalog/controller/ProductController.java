@@ -49,7 +49,7 @@ public class ProductController {
     public ResponseEntity<Product> createProductPost(@RequestBody Product product) {
         service.create(product);
         messagingTemplate.convertAndSend(TOPICS,UPDATE);
-        return ResponseEntity.ok(service.create(product));
+        return ResponseEntity.ok(product);
     }
 
 
