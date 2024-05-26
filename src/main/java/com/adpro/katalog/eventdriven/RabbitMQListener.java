@@ -8,7 +8,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +35,18 @@ public class RabbitMQListener {
         if (responseBody != null) { // Check if responseBody is not null
             JsonNode orderNode = responseBody.get("data").get("order");
             JsonNode cartItems = orderNode.get("cartItems");
+            String userId = orderNode.get("userId").asText();
             List<ProductDTO> productDTOs = jsonToProductDTOList(cartItems);
             productService.updateProductsStock(productDTOs);
+            for(ProductDTO productDTO : productDTOs){
+                Map<String, String> data = new HashMap<>();
+                data.put("userId", userId);
+                data.put("productId", productDTO.getProductId());
+                rest.postForEntity(
+                    "https://api-gateway-specialitystore.up.railway.app/purchase-service/shopping-cart/delete",
+                     data, JsonNode.class);
+            }
+
         } else {
             // Handle the case where responseBody is null, such as logging an error or throwing an exception.
         }
